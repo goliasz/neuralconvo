@@ -40,29 +40,43 @@
     }
   }
 
+  function formatResponse(textResponse) {
+    return 'Neural Chat: <span style="color:red">' + textResponse + '</span>';
+  }
+
+  function formatUserInput(textInput) {
+    return 'You: <span style="color:blue">' + textInput + '</span>';
+  }
+
+
+  function showAnswer(formattedAnswer) {
+    var input = document.all('textToAnalyze');
+    var userInput = formatUserInput(input.value);
+    var history = document.all('response');
+    var responseText = formatResponse(formattedAnswer);
+    history.innerHTML = responseText + "<br />" + userInput + "<br />" + history.innerHTML;
+    showStatus('Ready for your input');
+    resetInput();
+    setInputFocus();
+  }
+
   function sendUserInputToExternalService() {
     var inputText = document.all('textToAnalyze').value;
 
     console.log(inputText);
 
     $.ajax({
-      data: JSON.stringify({"msg":"Help"}),
+      data: JSON.stringify({"msg":inputText}),
       type: 'POST',
-      url: "http://piodel:9988/ncchat",
+      url: "ncchat",
       contentType: 'application/json',
       success: function(result) {
         console.log(result);
+        showAnswer(result.response);
       }
     });
 
   }
-
-  //function showResponse(jsonResponse) {
-	//var obj = JSON.parse(jsonResponse);
-	//var htmlResponse=obj.htmlResponse;
-	//var responseHTML=formatResponse(htmlResponse);
-	//showAnswer(responseHTML);
-  //}
 
 </script>
 
