@@ -95,9 +95,10 @@ server:add_resource("ncchat", {
          print("Response: " .. msg_submission.response)
          table.insert(responses, msg_submission)
          local result = {
-            id = next_id
+            id = next_id,
+            response = msg_submission.response
          }
-         return restserver.response():status(200):entity(responses)
+         return restserver.response():status(200):entity(result)
       end,
    }
    
