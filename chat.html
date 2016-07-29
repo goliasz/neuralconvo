@@ -1,0 +1,71 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+  <title>Neuralconvo Chat</title>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
+</head>
+<body>
+
+<div id="controls">
+  <div id="inputDiv">
+    <span id="status">Status: <span id="statusText"></span></span><br/> 
+    <input id="textToAnalyze" type="text" name="textToAnalyze" onkeypress="return onInputKeyPress(event)" size="80" autocomplete="off" autofocus>
+    <input type="button" value="Go" onclick=processCompletedInput()>
+    <input type="button" value="Reset input" onclick=resetInput()><br/>
+
+    <ul id="autosuggest-list"></ul>
+    <br/>
+  </div>
+</div>
+<div id="response"></div><br/>
+
+<script>
+
+  function resetInput() {
+    var input = document.all("textToAnalyze");
+    input.value="";
+  }
+
+  function processCompletedInput() {
+    sendUserInputToExternalService();
+  }
+
+  function onInputKeyPress(e) {
+    if (e.keyCode == 13) {
+      processCompletedInput();
+      return false;
+    }
+  }
+
+  function sendUserInputToExternalService() {
+    var inputText = document.all('textToAnalyze').value;
+
+    console.log(inputText);
+
+    $.ajax({
+      data: JSON.stringify({"msg":"Help"}),
+      type: 'POST',
+      url: "http://piodel:9988/ncchat",
+      contentType: 'application/json',
+      success: function(result) {
+        console.log(result);
+      }
+    });
+
+  }
+
+  //function showResponse(jsonResponse) {
+	//var obj = JSON.parse(jsonResponse);
+	//var htmlResponse=obj.htmlResponse;
+	//var responseHTML=formatResponse(htmlResponse);
+	//showAnswer(responseHTML);
+  //}
+
+</script>
+
+
+</body>
+</html>

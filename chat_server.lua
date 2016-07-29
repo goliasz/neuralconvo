@@ -73,6 +73,12 @@ function say(text)
   return output
 end
 
+function readAll(file)
+    local f = io.open(file, "rb")
+    local content = f:read("*all")
+    f:close()
+    return content
+end
 
 local restserver = require("restserver")
 local server = restserver:new():port(8080)
@@ -93,12 +99,21 @@ server:add_resource("ncchat", {
          next_id = next_id + 1
          msg_submission.response = say(msg_submission.msg)
          print("Response: " .. msg_submission.response)
-         table.insert(responses, msg_submission)
+         -- table.insert(responses, msg_submission)
          local result = {
             id = next_id,
             response = msg_submission.response
          }
-         return restserver.response():status(200):entity(result)
+         res = restserver.response():status(200):entity(result)
+         return res
+      end,
+   },
+   {
+      method = "GET",
+      path = "/",
+      produces = "text/html",
+      handler = function()
+         return restserver.response():status(200):entity(readAll("/root/neuralconvo/chat.html"))
       end,
    }
    
