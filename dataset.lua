@@ -81,14 +81,14 @@ function DataSet:visit(conversations)
   for i, conversation in ipairs(conversations) do
     if i > total then break end
     self:visitConversation(conversation)
-    xlua.progress(i, total)
+    -- xlua.progress(i, total)
   end
 
   -- Revisit from the perspective of 2nd character
   for i, conversation in ipairs(conversations) do
     if #conversations + i > total then break end
     self:visitConversation(conversation, 2)
-    xlua.progress(#conversations + i, total)
+    -- xlua.progress(#conversations + i, total)
   end
   
   print("-- Shuffling ")
@@ -112,7 +112,7 @@ function DataSet:writeExamplesToFile()
 
   for i, example in ipairs(self.examples) do
     file:writeObject(example)
-    xlua.progress(i, #self.examples)
+    -- xlua.progress(i, #self.examples)
   end
 
   file:close()
